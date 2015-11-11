@@ -34,10 +34,12 @@ public class SnakeModel extends GameModel {
     }
     /** Graphical representation of the food tile */
     private static final GameTile FOOD_TILE = new RoundTile(Color.RED);
-    /** Graphical representation of the snake*/
-    private static Deque Snake = new ArrayDeque();
     /** Graphical representation of a blank tile */
     private static final GameTile BLANK_TILE = new GameTile();
+    /** Graphical representation of a snake tile */
+    private static final GameTile SNAKE_TILE = new RectangularTile(Color.BLACK);
+    /** Graphical representation of the snake*/
+    private Deque Snake = new ArrayDeque();
     /** Position of the food tile */
     private Position foodPos = new Position(0, 0);
     /** Position of the head of the snake */
@@ -62,11 +64,11 @@ public class SnakeModel extends GameModel {
         }
 
         //Create snake head
-        Snake.addFirst(new RectangularTile(Color.BLACK));
+        Snake.add(new Position(size.width/2, size.height/2));
 
         //Insert snake
-        snakePos = new Position(size.width*2, size.height*2);
-        setGameboardState(snakePos, (GameTile) Snake.getFirst());
+        snakePos = new Position(size.width/2, size.height/2);
+        setGameboardState((Position)Snake.element(), SNAKE_TILE);
 
         //Insert food
         addFood();
@@ -108,14 +110,34 @@ public class SnakeModel extends GameModel {
 
     private Position getNextSnakePos() {
         return new Position(
-                snakePos.getX() + direction.getXDelta(),
-                snakePos.getY() + direction.getYDelta());
+                ((Position)Snake.getFirst()).getX() + direction.getXDelta(),
+                ((Position)Snake.getFirst()).getY() + direction.getYDelta());
     }
 
-
-
+    private boolean isOutOfBounds(Position pos) {
+        return pos.getX() < 0 || pos.getX() >= getGameboardSize().width
+                || pos.getY() < 0 || pos.getY() >= getGameboardSize().height;
+    }
 
     public void gameUpdate(final int lastKey) throws GameOverException {
+        updateDirection(lastKey);
 
+        //Move snake..
+        Snake.addFirst(getNextSnakePos());
+
+        if(isOutOfBounds((Position) Snake.getFirst())
+                || (getGameboardState((Position) Snake.getFirst()) instanceof RectangularTile)) {
+            throw new GameOverException(score);
+        }
+
+        if (!(getGameboardState((Position)Snake.getFirst()) instanceof RoundTile)) { //if food is not eaten, remove tail
+            setGameboardState((Position)Snake.getLast(), BLANK_TILE);
+            Snake.removeLast();
+        } else { //if food is eaten, skip removing tail once and add new food
+            score++;
+            addFood();
+        }
+        setGameboardState((Position)Snake.getFirst(), SNAKE_TILE);
     }
+
 }
