@@ -125,7 +125,7 @@ public class SnakeModel extends GameModel {
         //Move snake..
         Snake.addFirst(getNextSnakePos());
 
-        if(isOutOfBounds((Position) Snake.getFirst())
+        if(isOutOfBounds((Position) Snake.getFirst()) //if border or snake body is hit
                 || (getGameboardState((Position) Snake.getFirst()) instanceof RectangularTile)) {
             throw new GameOverException(score);
         }
