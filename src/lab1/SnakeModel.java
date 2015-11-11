@@ -139,5 +139,4 @@ public class SnakeModel extends GameModel {
         }
         setGameboardState((Position)Snake.getFirst(), SNAKE_TILE);
     }
-
 }
