@@ -106,17 +106,22 @@ public class SnakeModel extends GameModel {
     private void updateDirection(final int key) {
         switch (key) {
             case KeyEvent.VK_LEFT:
-                direction = Directions.WEST;
+                if (!(direction == Directions.EAST)) {
+                    direction = Directions.WEST;
+                }
                 break;
             case KeyEvent.VK_UP:
-                direction = Directions.NORTH;
-                break;
+                if (!(direction == Directions.SOUTH)) {
+                    direction = Directions.NORTH;
+                }                break;
             case KeyEvent.VK_RIGHT:
-                direction = Directions.EAST;
-                break;
+                if (!(direction == Directions.WEST)) {
+                    direction = Directions.EAST;
+                }                break;
             case KeyEvent.VK_DOWN:
-                direction = Directions.SOUTH;
-                break;
+                if (!(direction == Directions.NORTH)) {
+                    direction = Directions.SOUTH;
+                }                break;
             default:
                 // Don't change direction if another key is pressed
                 break;
