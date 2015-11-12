@@ -43,8 +43,6 @@ public class SnakeModel extends GameModel {
     private Deque Snake = new ArrayDeque();
     /** Position of the food tile */
     private Position foodPos = new Position(0, 0);
-    /** Position of the head of the snake */
-    private Position snakePos;
     /** Current direction of the snake */
     private Directions direction = Directions.NORTH;
     /** Food eaten / snake body length */
