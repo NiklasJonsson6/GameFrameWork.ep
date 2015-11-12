@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
+/** The game Snake */
 public class SnakeModel extends GameModel {
 
     //Variables:
@@ -52,10 +53,11 @@ public class SnakeModel extends GameModel {
     private Dimension size = getGameboardSize();
 
     //Constructors
-    public SnakeModel() {
-        /*//Size of gameboard
-        Dimension size = getGameboardSize();*/
 
+    /**
+     * Create a new model for the snake game
+     */
+    public SnakeModel() {
         //Blank out gameboard
         for (int i = 0; i < size.width; i++) {
             for (int j = 0; j < size.height; j++) {
@@ -75,6 +77,10 @@ public class SnakeModel extends GameModel {
     }
 
     //Methods
+
+    /**
+     * Adds a food tile on a random tile on the gameboard
+     */
     private void addFood() {
         //Find blank position
         do {
@@ -84,10 +90,19 @@ public class SnakeModel extends GameModel {
         setGameboardState(foodPos, FOOD_TILE);
     }
 
+    /**
+     * Checks if the given position on gameboard is blank
+     * @param pos The position to check
+     * @return  <code>true</code> if the tile is blank, <code>false</code> otherwise.
+     */
     private boolean isPositionEmpty(final Position pos) {
         return (getGameboardState(pos) == BLANK_TILE);
     }
 
+    /**
+     * Update the direction of the collector
+     * according to the user's keypress.
+     */
     private void updateDirection(final int key) {
         switch (key) {
             case KeyEvent.VK_LEFT:
@@ -108,17 +123,33 @@ public class SnakeModel extends GameModel {
         }
     }
 
+    /**
+     * Get next position of the snake head
+     */
     private Position getNextSnakePos() {
         return new Position(
                 ((Position)Snake.getFirst()).getX() + direction.getXDelta(),
                 ((Position)Snake.getFirst()).getY() + direction.getYDelta());
     }
 
+    /**
+     *
+     * @param pos The position to test.
+     * @return <code>false</code> if the position is outside the playing field, <code>true</code> otherwise.
+     */
     private boolean isOutOfBounds(Position pos) {
         return pos.getX() < 0 || pos.getX() >= getGameboardSize().width
                 || pos.getY() < 0 || pos.getY() >= getGameboardSize().height;
     }
 
+    /**
+     * This method is called repeatedly so that the
+     * game can update its state.
+     *
+     * @param lastKey
+     *            The most recent keystroke.
+     */
+    @Override
     public void gameUpdate(final int lastKey) throws GameOverException {
         updateDirection(lastKey);
 
