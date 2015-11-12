@@ -67,7 +67,6 @@ public class SnakeModel extends GameModel {
         Snake.add(new Position(size.width/2, size.height/2));
 
         //Insert snake
-        snakePos = new Position(size.width/2, size.height/2);
         setGameboardState((Position)Snake.element(), SNAKE_TILE);
 
         //Insert food
